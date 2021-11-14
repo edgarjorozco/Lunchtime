@@ -13,6 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+apikeys.properties
 *.apk
 # Windows thumbnail db
 Thumbs.db
