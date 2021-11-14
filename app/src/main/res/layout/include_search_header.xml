@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.edgarjorozco.lunchtime.presentation.search.vm.SearchViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingTop="@dimen/margin_large"
+        android:paddingBottom="@dimen/margin_large">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/center_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"/>
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/all_trails_logo"
+            android:contentDescription="@string/logo_content_desc"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/center_guideline"
+            app:layout_constraintHorizontal_bias="1"/>
+
+        <TextView
+            android:id="@+id/header_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_page_header_text"
+            style="@style/LogoHeader"
+            android:textStyle=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/center_guideline"
+            app:layout_constraintTop_toTopOf="@id/logo"
+            app:layout_constraintBottom_toBottomOf="@id/logo"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintVertical_bias="0.2"/>
+
+        <ImageButton
+            android:id="@+id/filter_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/favorites_folder"
+            android:backgroundTint="@color/transparent"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:contentDescription="@string/favorite_desc"
+            android:onClick="@{v -> viewModel.onFavoritesRequested()}"
+            app:layout_constraintTop_toBottomOf="@id/logo"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/search_bar_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/search_bar_background"
+            android:elevation="@dimen/search_bar_elevation"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            app:layout_constraintTop_toTopOf="@id/filter_button"
+            app:layout_constraintBottom_toBottomOf="@id/filter_button"
+            app:layout_constraintStart_toEndOf="@id/filter_button"
+            app:layout_constraintEnd_toEndOf="parent">
+            <AutoCompleteTextView
+                android:id="@+id/search_bar"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:hint="@string/search_frag_autocomplete_hint"
+                android:textSize="@dimen/default_text_size"
+                android:background="@null"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:singleLine="true"
+                app:afterTextChanged="@{editable -> viewModel.fetchPlaceSuggestions(editable)}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/search_bar_clear"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <ImageView
+                android:id="@+id/search_bar_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:src="@drawable/clear_icon"
+                android:contentDescription="@string/search_icon_desc"
+                android:layout_marginEnd="@dimen/margin_small"
+                app:tint="@color/at_green"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  standard text sizes  -->
+    <dimen name="default_text_size">14sp</dimen>
+    <dimen name="small_text_size">12sp</dimen>
+    <dimen name="header_text_size">17sp</dimen>
+
+    <!--  standard margins  -->
+    <dimen name="margin_tiny">2dp</dimen>
+    <dimen name="margin_small">5dp</dimen>
+    <dimen name="margin_medium">10dp</dimen>
+    <dimen name="margin_large">15dp</dimen>
+    <dimen name="margin_x_large">20dp</dimen>
+
+    <!--  standard container paddings  -->
+    <dimen name="container_padding_small">5dp</dimen>
+    <dimen name="container_padding_default">15dp</dimen>
+    <dimen name="container_padding_large">25dp</dimen>
+    
+    <dimen name="elevation_normal">2dp</dimen>
+    <dimen name="elevation_low">1dp</dimen>
+    <dimen name="elevation_high">4dp</dimen>
+
+    <dimen name="default_corner_radius">5dp</dimen>
+    <dimen name="default_outline_width">1dp</dimen>
+
+    <dimen name="logo_header_text_size">26sp</dimen>
+    <dimen name="search_bar_elevation">@dimen/elevation_normal</dimen>
+    <dimen name="list_view_photo_size">75dp</dimen>
+    <dimen name="search_bar_min_height">30dp</dimen>
+</resources>

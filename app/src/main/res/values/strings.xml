@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Lunchtime</string>
+    <string name="title_main_activity">MainActivity</string>
+
+    <string name="bullet_point">\u2022</string>
+    <string name="currency_sign">$</string>
+
+    <string name="search_frag_autocomplete_hint">Search for a restaurant</string>
+    <string name="search_frag_list_button">List</string>
+    <string name="search_frag_map_button">Map</string>
+    <string name="search_page_header_text">at Lunch</string>
+
+    <string name="location_denied">Location Denied</string>
+
+    <string name="list_item_place_rating_count">(%d)</string>
+
+    <string name="logo_content_desc">Logo</string>
+    <string name="search_icon_desc">Search Icon</string>
+    <string name="place_image_desc">Place Image</string>
+    <string name="favorite_desc">Favorite Button</string>
+    <string name="favorites_desc">Favorites</string>
+</resources>

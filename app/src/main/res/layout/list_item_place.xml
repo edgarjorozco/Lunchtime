@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="place"
+            type="com.edgarjorozco.lunchtime.domain.Place"/>
+
+        <variable
+            name="shouldLoadPhoto"
+            type="Boolean"/>
+        <import
+            alias="ext"
+            type="com.edgarjorozco.lunchtime.util.StringExtensionsKt"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_rect_bg"
+        android:elevation="@dimen/elevation_normal"
+        android:padding="@dimen/container_padding_default">
+
+        <ImageView
+            android:id="@+id/place_image"
+            android:layout_width="@dimen/list_view_photo_size"
+            android:layout_height="@dimen/list_view_photo_size"
+            android:maxWidth="@dimen/list_view_photo_size"
+            android:contentDescription="@string/place_image_desc"
+            android:scaleType="centerCrop"
+            tools:src="@color/at_grey"
+            app:googlePlacesPhoto="@{shouldLoadPhoto ? place.photos.get(0).photoReference : null}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/place_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/LunchtimeHeaderText"
+            android:text="@{place.name}"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintStart_toEndOf="@id/place_image"
+            app:layout_constraintTop_toTopOf="@id/place_image"
+            app:layout_constraintEnd_toStartOf="@id/favorite_button"
+            tools:text="Restaurant Name Long name long name" />
+
+        <RatingBar
+            android:id="@+id/place_rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/LunchtimeRatingBar"
+            android:layout_marginTop="@dimen/margin_small"
+            android:rating="@{place.rating}"
+            tools:rating="4.5"
+            app:layout_constraintStart_toStartOf="@id/place_name"
+            app:layout_constraintTop_toBottomOf="@id/place_name"/>
+
+        <TextView
+            android:id="@+id/ratings_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/LunchtimeDetailText"
+            android:text="@{@string/list_item_place_rating_count(place.ratingsCount)}"
+            android:layout_marginStart="@dimen/margin_small"
+            tools:text="(355)"
+            app:layout_constraintStart_toEndOf="@id/place_rating_bar"
+            app:layout_constraintTop_toTopOf="@id/place_rating_bar"
+            app:layout_constraintBottom_toBottomOf="@id/place_rating_bar"/>
+
+        <TextView
+            android:id="@+id/sub_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/LunchtimeDetailText"
+            android:text="@{ext.withBulletSeparator(ext.repeatN(@string/currency_sign, place.priceLevel), place.simplifiedAddress)}"
+            android:layout_marginTop="@dimen/margin_small"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="$$$ \u25CF 1900 South Broadway, Los Angeles"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/place_rating_bar"
+            app:layout_constraintStart_toStartOf="@id/place_name"/>
+
+        <ImageView
+            android:id="@+id/favorite_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/favorite_desc"
+            android:src="@{place.isFavorite() ? @drawable/favorite_filled : @drawable/favorite_empty}"
+            tools:src="@drawable/favorite_empty"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
