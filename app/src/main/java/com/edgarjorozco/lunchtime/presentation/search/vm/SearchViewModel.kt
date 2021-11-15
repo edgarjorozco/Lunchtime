@@ -1,10 +1,7 @@
 package com.edgarjorozco.lunchtime.presentation.search.vm
 
 import android.text.Editable
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.edgarjorozco.lunchtime.datasource.network.AutoCompletePrediction
 import com.edgarjorozco.lunchtime.models.DataState
 import com.edgarjorozco.lunchtime.models.LatLng
@@ -14,8 +11,8 @@ import com.edgarjorozco.lunchtime.repository.NearbySearchRepository
 import com.edgarjorozco.lunchtime.usecases.AutoCompleteUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -73,10 +70,11 @@ constructor(
                 ?: return
 
         viewModelScope.launch {
-            nearbySearchRepository.getNearbyPlaces(latLng, radius?: DEFAULT_SEARCH_RADIUS).onEach {
+            nearbySearchRepository.getNearbyPlaces(latLng, radius?: DEFAULT_SEARCH_RADIUS).onStart {
                 _resultsSource.value = SearchResultsSource.NearbySearch
+            }.onEach {
                 _placeResults.value = it
-            }.launchIn(this)
+            }.launchIn(viewModelScope)
         }
     }
 
@@ -99,11 +97,12 @@ constructor(
 
     fun onSuggestionSelected(suggestion: AutoCompletePrediction) {
         viewModelScope.launch {
-            autoCompleteUseCases.getFullPlaceDetail(suggestion.place_id).onEach {
+            autoCompleteUseCases.getFullPlaceDetail(suggestion.place_id).onStart {
+                _resultsSource.value = SearchResultsSource.SuggestionSelection
+            }.onEach {
                 when(it) {
                     is DataState.Success -> {
                         it.toData()?.let { place ->
-                            _resultsSource.value = SearchResultsSource.SuggestionSelection
                             _placeResults.value = DataState.Success(mapOf(Pair(place.placeId, place)))
                             _newMapCenterLocation.value = place.location
                         }
@@ -123,9 +122,10 @@ constructor(
 
     fun onFavoritesRequested() {
         viewModelScope.launch {
-            favoritesRepository.getFavorites().map { placeMap ->
+            favoritesRepository.getFavorites().onStart{
                 _resultsSource.value = SearchResultsSource.Favorites
-                _placeResults.value = placeMap
+            }.onEach {
+                _placeResults.value = it
             }.launchIn(this)
         }
     }
