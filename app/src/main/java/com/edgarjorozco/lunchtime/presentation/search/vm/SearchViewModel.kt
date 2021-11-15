@@ -34,7 +34,7 @@ constructor(
         when (_searchResultsMode.value) {
             is SearchResultsMode.MapMode -> _searchResultsMode.value = SearchResultsMode.ListMode
             is SearchResultsMode.ListMode -> _searchResultsMode.value = SearchResultsMode.MapMode
-            else -> { } // button isn't visible in tablet mode anyway
+            else -> { } // button isn't visible in tablet mode
         }
     }
 
@@ -48,7 +48,8 @@ constructor(
         _userLocationState.value = location
         when (location) {
             is LocationState.None -> {
-                // todo execute generic initial search
+                _newMapCenterLocation.value = DEFAULT_SEARCH_LOCATION
+                onSearchNearby(DEFAULT_SEARCH_LOCATION.lat, DEFAULT_SEARCH_LOCATION.lng)
             }
             else -> {
                 val userLatLng = location.toData()!!
@@ -132,5 +133,6 @@ constructor(
     companion object {
         const val DEFAULT_SEARCH_RADIUS = 4000
         const val SEARCH_THRESHOLD = 3
+        val DEFAULT_SEARCH_LOCATION = LatLng(34.0522, -118.2437) // Los Angeles
     }
 }
