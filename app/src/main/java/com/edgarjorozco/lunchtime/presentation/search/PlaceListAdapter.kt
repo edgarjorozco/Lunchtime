@@ -20,12 +20,14 @@ class PlaceListAdapter(private val onFavoriteChange: (place: Place) -> Unit):
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
         val place = getItem(position)
-        holder.binding.shouldLoadPhoto = true
-        holder.binding.place = place
-        holder.binding.favoriteButton.setOnClickListener {
-            place.isFavorite = !place.isFavorite
-            holder.binding.invalidateAll()
-            onFavoriteChange.invoke(place)
+        holder.binding.apply {
+            shouldLoadPhoto = true
+            this.place = place
+            favoriteButton.setOnClickListener {
+                place.isFavorite = !place.isFavorite
+                holder.binding.invalidateAll()
+                onFavoriteChange.invoke(place)
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.edgarjorozco.lunchtime.presentation.search
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.edgarjorozco.lunchtime.R
@@ -21,28 +22,46 @@ class ListFragment: LunchtimeBaseFragment<SearchListFragmentBinding>(R.layout.se
         super.onViewCreated(view, savedInstanceState)
         dataBinding?.viewModel = viewModel
         dataBinding?.lifecycleOwner = viewLifecycleOwner
-
         setUpRecycler()
     }
 
     private fun setUpRecycler() {
         val layoutManager = LinearLayoutManager(requireContext())
-        dataBinding?.placeRecycler?.layoutManager = layoutManager
-        dataBinding?.placeRecycler?.addItemDecoration(SpaceDecoration(DECORATOR_SPACE_DP.dpToPx(requireContext())))
+        val adapter = PlaceListAdapter { viewModel.onFavoriteListing(it) }
 
-        val adapter = PlaceListAdapter {
-            viewModel.onFavoriteListing(it)
+        dataBinding?.placeRecycler?.apply {
+            this.layoutManager = layoutManager
+            addItemDecoration(SpaceDecoration(DECORATOR_SPACE_DP.dpToPx(requireContext())))
+            this.adapter = adapter
         }
-        dataBinding?.placeRecycler?.adapter = adapter
 
         viewModel.placeResults.observe(viewLifecycleOwner, {
             when(it) {
-                is DataState.Error -> showError(it.toErrorMessage())
-                DataState.Loading -> showLoading()
-                is DataState.Success -> adapter.submitList(it.data?.values?.toList())
+                is DataState.Loading -> showLoading(true)
+                is DataState.Error -> {
+                    showError(it.toErrorMessage())
+                    showLoading(false)
+                }
+                is DataState.Success -> {
+                    adapter.submitList(it.data?.values?.toList())
+                    showLoading(false)
+                }
             }
         })
 
+    }
+
+    override fun showLoading(isLoading: Boolean) {
+        dataBinding?.placeRecycler?.isVisible = !isLoading
+        dataBinding?.includeShimmerPlaceholder?.let {
+            if (isLoading){
+                it.shimmerContainer.isVisible = true
+                it.shimmerContainer.startShimmer()
+            } else {
+                it.shimmerContainer.isVisible = false
+                it.shimmerContainer.stopShimmer()
+            }
+        }
     }
 
     companion object {

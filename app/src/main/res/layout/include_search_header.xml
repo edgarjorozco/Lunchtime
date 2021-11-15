@@ -83,7 +83,7 @@
                 android:background="@null"
                 android:layout_marginStart="@dimen/margin_medium"
                 android:singleLine="true"
-                app:afterTextChanged="@{editable -> viewModel.fetchPlaceSuggestions(editable)}"
+                app:afterTextChanged="@{editable -> viewModel.onFetchPlaceSuggestions(editable)}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/search_bar_clear"
                 app:layout_constraintTop_toTopOf="parent"
@@ -101,7 +101,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

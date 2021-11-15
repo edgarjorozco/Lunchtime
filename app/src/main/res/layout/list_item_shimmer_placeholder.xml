@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_rect_bg"
+            android:elevation="@dimen/elevation_normal"
+            android:padding="@dimen/container_padding_default">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/sixty_percent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.6"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/seventy_five_percent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                app:layout_constraintGuide_percent="0.75"/>
+
+            <ImageView
+                android:id="@+id/image_placeholder"
+                android:layout_width="@dimen/list_view_photo_size"
+                android:layout_height="@dimen/list_view_photo_size"
+                android:maxWidth="@dimen/list_view_photo_size"
+                android:contentDescription="@string/place_image_desc"
+                android:scaleType="centerCrop"
+                android:src="@color/at_light_grey"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/first_line_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/LunchtimeHeaderText.Placeholder"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginStart="@dimen/margin_medium"
+                app:layout_constraintStart_toEndOf="@id/image_placeholder"
+                app:layout_constraintTop_toTopOf="@id/image_placeholder"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/second_line_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/LunchtimeDetailText.Placeholder"
+                android:layout_marginTop="@dimen/margin_small"
+                app:layout_constraintStart_toStartOf="@id/first_line_placeholder"
+                app:layout_constraintTop_toBottomOf="@id/first_line_placeholder"
+                app:layout_constraintEnd_toEndOf="@id/sixty_percent"/>
+
+            <TextView
+                android:id="@+id/third_line_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/LunchtimeDetailText.Placeholder"
+                android:layout_marginTop="@dimen/margin_small"
+                app:layout_constraintTop_toBottomOf="@id/second_line_placeholder"
+                app:layout_constraintStart_toStartOf="@id/first_line_placeholder"
+                app:layout_constraintEnd_toEndOf="@id/seventy_five_percent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

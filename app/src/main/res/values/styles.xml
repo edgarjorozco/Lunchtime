@@ -33,6 +33,16 @@
     <style name="LunchtimeRatingBar" parent="Widget.AppCompat.RatingBar.Small">
         <item name="android:progressTint">@color/at_yellow</item>
         <item name="android:stepSize">0.1</item>
-        <item name="android:secondaryProgressTint">@android:color/transparent</item>
+        <item name="android:secondaryProgressTint">@color/transparent</item>
+        <item name="android:progressBackgroundTint">@color/at_grey</item>
+
+    </style>
+
+    <style name="LunchtimeDetailText.Placeholder">
+        <item name="android:background">@color/at_light_grey</item>
+    </style>
+
+    <style name="LunchtimeHeaderText.Placeholder">
+        <item name="android:background">@color/at_light_grey</item>
     </style>
 </resources>

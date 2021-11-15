@@ -25,6 +25,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:viewModel="@{viewModel}"/>
 
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:indeterminateOnly="true"
+            android:visibility="@{viewModel.placeResults.isLoading() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@id/include_search_header"
+            app:layout_constraintBottom_toBottomOf="@id/include_search_header"
+            />
+
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/map_container"
             android:layout_width="match_parent"

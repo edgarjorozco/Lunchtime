@@ -53,7 +53,7 @@ constructor(
             else -> {
                 val userLatLng = location.toData()!!
                 _newMapCenterLocation.value = userLatLng
-                searchNearby(userLatLng.lat, userLatLng.lng)
+                onSearchNearby(userLatLng.lat, userLatLng.lng)
             }
         }
     }
@@ -61,9 +61,19 @@ constructor(
     private val _placeResults: MutableLiveData<DataState<Map<String, Place>?>> = MutableLiveData()
     val placeResults: LiveData<DataState<Map<String, Place>?>> = _placeResults
 
-    fun searchNearby(lat: Double, lng: Double, radius: Int? = DEFAULT_SEARCH_RADIUS) {
+    private val _resultsSource: MutableLiveData<SearchResultsSource> = MutableLiveData()
+    val resultsSource: LiveData<SearchResultsSource> = _resultsSource
+
+    fun onSearchNearby(lat: Double? = null, lng: Double? = null, radius: Int? = DEFAULT_SEARCH_RADIUS) {
+        val latLng =
+            (if (lat == null || lng == null)
+                _newMapCenterLocation.value
+            else LatLng(lat, lng))
+                ?: return
+
         viewModelScope.launch {
-            nearbySearchRepository.getNearbyPlaces(LatLng(lat, lng), radius?: DEFAULT_SEARCH_RADIUS).onEach {
+            nearbySearchRepository.getNearbyPlaces(latLng, radius?: DEFAULT_SEARCH_RADIUS).onEach {
+                _resultsSource.value = SearchResultsSource.NearbySearch
                 _placeResults.value = it
             }.launchIn(this)
         }
@@ -72,7 +82,7 @@ constructor(
     private val _suggestionList: MutableLiveData<DataState<ArrayList<AutoCompletePrediction>?>> = MutableLiveData()
     val suggestionList: LiveData<DataState<ArrayList<AutoCompletePrediction>?>> = _suggestionList
 
-    fun fetchPlaceSuggestions(input: Editable?) {
+    fun onFetchPlaceSuggestions(input: Editable?) {
         if (input == null || input.length < SEARCH_THRESHOLD) {
             if (_suggestionList.value?.toData() != null) _suggestionList.value = DataState.Success(null)
             return
@@ -92,6 +102,7 @@ constructor(
                 when(it) {
                     is DataState.Success -> {
                         it.toData()?.let { place ->
+                            _resultsSource.value = SearchResultsSource.SuggestionSelection
                             _placeResults.value = DataState.Success(mapOf(Pair(place.placeId, place)))
                             _newMapCenterLocation.value = place.location
                         }
@@ -112,6 +123,7 @@ constructor(
     fun onFavoritesRequested() {
         viewModelScope.launch {
             favoritesRepository.getFavorites().map { placeMap ->
+                _resultsSource.value = SearchResultsSource.Favorites
                 _placeResults.value = placeMap
             }.launchIn(this)
         }

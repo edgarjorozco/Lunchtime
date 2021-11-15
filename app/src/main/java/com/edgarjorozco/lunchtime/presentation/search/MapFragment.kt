@@ -17,7 +17,9 @@ import com.edgarjorozco.lunchtime.databinding.ListItemPlaceBinding
 import com.edgarjorozco.lunchtime.domain.DataState
 import com.edgarjorozco.lunchtime.domain.Place
 import com.edgarjorozco.lunchtime.presentation.search.vm.LocationState
+import com.edgarjorozco.lunchtime.presentation.search.vm.SearchResultsSource
 import com.edgarjorozco.lunchtime.presentation.search.vm.SearchViewModel
+import com.edgarjorozco.lunchtime.util.dpToPx
 import com.edgarjorozco.lunchtime.util.generateGooglePlacesPhotoUrl
 import com.edgarjorozco.lunchtime.util.metersAcrossMinimumDimension
 import com.edgarjorozco.lunchtime.util.toBitmap
@@ -31,7 +33,6 @@ class MapFragment: SupportMapFragment(), GoogleMap.OnMarkerClickListener, OnMapR
     GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnMapClickListener {
     companion object {
         const val DEFAULT_ZOOM_LEVEL = 15f
-        const val COARSE_DEFAULT_ZOOM_LEVEL = 14f
     }
 
     private val viewModel: SearchViewModel by viewModels(
@@ -40,6 +41,7 @@ class MapFragment: SupportMapFragment(), GoogleMap.OnMarkerClickListener, OnMapR
     private var googleMap: GoogleMap? = null
     private var selectedMarker: Marker? = null
     private var cameraChangeReason = REASON_API_ANIMATION
+    private var moveToResults = false
 
     private val activeBitmap by lazy {
         val drawable = AppCompatResources.getDrawable(requireContext(), R.drawable.active_pin)
@@ -62,16 +64,16 @@ class MapFragment: SupportMapFragment(), GoogleMap.OnMarkerClickListener, OnMapR
         observeMapCenter()
         observeNearbyPlaces()
         observeUserLocationState()
+        observeResultsSource()
     }
 
     private fun observeNearbyPlaces() {
         viewModel.placeResults.observe(viewLifecycleOwner, {
             when(it) {
-                is DataState.Error -> showError(it.toErrorMessage())
-                DataState.Loading -> showLoading()
                 is DataState.Success -> {
                     googleMap?.clear()
                     selectedMarker = null
+                    val builder = LatLngBounds.builder()
                     it.data?.forEach { (_, place) ->
                         val marker = googleMap?.addMarker(
                             MarkerOptions()
@@ -80,8 +82,16 @@ class MapFragment: SupportMapFragment(), GoogleMap.OnMarkerClickListener, OnMapR
                                 .icon(inactiveBitmap)
                         )
                         marker?.tag = place
+                        builder.include(LatLng(place.location.lat, place.location.lng))
+                    }
+
+                    if (moveToResults) {
+                        val newBounds = builder.build()
+                        val padding = 20f.dpToPx(requireContext())
+                        googleMap?.animateCamera(CameraUpdateFactory.newLatLngBounds(newBounds, padding))
                     }
                 }
+                else -> { }
             }
 
         })
@@ -89,7 +99,16 @@ class MapFragment: SupportMapFragment(), GoogleMap.OnMarkerClickListener, OnMapR
 
     private fun observeMapCenter() {
         viewModel.newMapCenterLocation.observe(viewLifecycleOwner, {
-            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(it.lat, it.lng), DEFAULT_ZOOM_LEVEL))
+            googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(it.lat, it.lng), DEFAULT_ZOOM_LEVEL))
+        })
+    }
+
+    private fun observeResultsSource() {
+        viewModel.resultsSource.observe(viewLifecycleOwner, {
+            moveToResults = when(it) {
+                SearchResultsSource.Favorites -> true
+                else -> false
+            }
         })
     }
 
@@ -124,7 +143,10 @@ class MapFragment: SupportMapFragment(), GoogleMap.OnMarkerClickListener, OnMapR
                     binding.favoriteButton.isVisible = false
                     binding.executePendingBindings()
                     // InfoWindow is not dynamic, gets turned into a Bitmap when it's passed back
-                    val url = requireContext().generateGooglePlacesPhotoUrl(binding.placeImage.maxWidth, place.photos?.get(0)?.photoReference?:"")
+                    val url = requireContext()
+                        .generateGooglePlacesPhotoUrl(binding.placeImage.maxWidth,
+                            place.photos?.get(0)?.photoReference?:"")
+
                     Glide.with(binding.placeImage)
                         .load(url)
                         .centerCrop()
@@ -153,7 +175,7 @@ class MapFragment: SupportMapFragment(), GoogleMap.OnMarkerClickListener, OnMapR
         if (cameraChangeReason == REASON_GESTURE) {
             googleMap?.cameraPosition?.target?.let {
                 val radius = googleMap?.metersAcrossMinimumDimension()
-                viewModel.searchNearby(it.latitude, it.longitude, radius?.toInt())
+                viewModel.onSearchNearby(it.latitude, it.longitude, radius?.toInt())
             }
         }
     }
@@ -169,13 +191,5 @@ class MapFragment: SupportMapFragment(), GoogleMap.OnMarkerClickListener, OnMapR
     override fun onMapClick(latLng: LatLng) {
         if (selectedMarker != null) selectedMarker?.setIcon(inactiveBitmap)
         selectedMarker = null
-    }
-
-    fun showLoading() {
-        //todo
-    }
-
-    fun showError(error: String?) {
-        //todo
     }
 }

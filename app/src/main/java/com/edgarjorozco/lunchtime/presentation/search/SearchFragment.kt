@@ -14,6 +14,7 @@ import com.edgarjorozco.lunchtime.datasource.network.AutoCompletePrediction
 import com.edgarjorozco.lunchtime.domain.DataState
 import com.edgarjorozco.lunchtime.domain.LatLng
 import com.edgarjorozco.lunchtime.presentation.search.vm.LocationState
+import com.edgarjorozco.lunchtime.presentation.search.vm.SearchResultsSource
 import com.edgarjorozco.lunchtime.presentation.search.vm.SearchViewModel
 import com.edgarjorozco.lunchtime.util.ui.LunchtimeBaseFragment
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -41,11 +42,11 @@ class SearchFragment: LunchtimeBaseFragment<FragmentSearchBinding>(R.layout.frag
         dataBinding?.lifecycleOwner = viewLifecycleOwner
 
         setUpSearchBar()
-
     }
 
     private fun setUpSearchBar() {
-        val arrayAdapter = ArrayAdapter<AutoCompletePrediction>(requireContext(), android.R.layout.simple_dropdown_item_1line)
+        val arrayAdapter =
+            ArrayAdapter<AutoCompletePrediction>(requireContext(), android.R.layout.simple_dropdown_item_1line)
         dataBinding?.includeSearchHeader?.apply {
             searchBar.setAdapter(arrayAdapter)
             searchBar.setOnItemClickListener { adapter, _, position, _ ->
@@ -57,20 +58,38 @@ class SearchFragment: LunchtimeBaseFragment<FragmentSearchBinding>(R.layout.frag
             }
             searchBarClear.setOnClickListener{
                 searchBar.setText("", false)
+                viewModel?.onSearchNearby()
                 hideSoftKeyBoard()
             }
         }
 
         viewModel.suggestionList.observe(viewLifecycleOwner, {
             when(it) {
-                is DataState.Error -> showError(it.toErrorMessage())
-                is DataState.Loading -> showLoading()
+                is DataState.Loading -> showLoading(true)
+                is DataState.Error -> {
+                    showError(it.toErrorMessage())
+                    showLoading(false)
+                }
                 is DataState.Success -> {
                     it.data?.let { predictions ->
                         arrayAdapter.clear()
                         arrayAdapter.addAll(predictions)
                         arrayAdapter.notifyDataSetChanged()
-                        if (predictions.size > 0) dataBinding?.includeSearchHeader?.searchBar?.showDropDown()
+                        if (predictions.size > 0)
+                            dataBinding?.includeSearchHeader?.searchBar?.showDropDown()
+                        showLoading(false)
+                    }
+                }
+            }
+        })
+
+        viewModel.resultsSource.observe(viewLifecycleOwner,{
+            when(it) {
+                SearchResultsSource.SuggestionSelection -> { }
+                else -> { // clear search bar for nearby and favorites
+                    dataBinding?.includeSearchHeader?.searchBar?.apply {
+                        setText("", false)
+                        clearFocus()
                     }
                 }
             }
@@ -100,7 +119,8 @@ class SearchFragment: LunchtimeBaseFragment<FragmentSearchBinding>(R.layout.frag
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         onRequestPermissionsResult(requestCode, grantResults)
     }

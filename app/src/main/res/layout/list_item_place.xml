@@ -64,7 +64,7 @@
             app:layout_constraintTop_toBottomOf="@id/place_name"/>
 
         <TextView
-            android:id="@+id/ratings_count"
+            android:id="@+id/place_rating_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/LunchtimeDetailText"
@@ -76,7 +76,7 @@
             app:layout_constraintBottom_toBottomOf="@id/place_rating_bar"/>
 
         <TextView
-            android:id="@+id/sub_text"
+            android:id="@+id/place_detail_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             style="@style/LunchtimeDetailText"
