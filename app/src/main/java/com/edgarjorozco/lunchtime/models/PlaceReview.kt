@@ -1,4 +1,4 @@
-package com.edgarjorozco.lunchtime.domain
+package com.edgarjorozco.lunchtime.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

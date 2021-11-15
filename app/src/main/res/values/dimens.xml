@@ -28,4 +28,5 @@
     <dimen name="search_bar_elevation">@dimen/elevation_normal</dimen>
     <dimen name="list_view_photo_size">75dp</dimen>
     <dimen name="search_bar_min_height">30dp</dimen>
+    <dimen name="photo_pager_height">300dp</dimen>
 </resources>

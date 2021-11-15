@@ -7,7 +7,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.edgarjorozco.lunchtime.R
 import com.edgarjorozco.lunchtime.databinding.SearchListFragmentBinding
-import com.edgarjorozco.lunchtime.domain.DataState
+import com.edgarjorozco.lunchtime.models.DataState
+import com.edgarjorozco.lunchtime.presentation.placedetail.PlaceDetailActivity
 import com.edgarjorozco.lunchtime.presentation.search.vm.SearchViewModel
 import com.edgarjorozco.lunchtime.util.dpToPx
 import com.edgarjorozco.lunchtime.util.ui.LunchtimeBaseFragment
@@ -27,7 +28,10 @@ class ListFragment: LunchtimeBaseFragment<SearchListFragmentBinding>(R.layout.se
 
     private fun setUpRecycler() {
         val layoutManager = LinearLayoutManager(requireContext())
-        val adapter = PlaceListAdapter { viewModel.onFavoriteListing(it) }
+        val adapter = PlaceListAdapter (
+            { viewModel.onFavoriteListing(it) },
+            { openDetail(it.placeId) }
+        )
 
         dataBinding?.placeRecycler?.apply {
             this.layoutManager = layoutManager
@@ -62,6 +66,11 @@ class ListFragment: LunchtimeBaseFragment<SearchListFragmentBinding>(R.layout.se
                 it.shimmerContainer.stopShimmer()
             }
         }
+    }
+
+    private fun openDetail(placeId: String) {
+        val intent = PlaceDetailActivity.getCallingIntent(requireContext(), placeId)
+        startActivity(intent)
     }
 
     companion object {

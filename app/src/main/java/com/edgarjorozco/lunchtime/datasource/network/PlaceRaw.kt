@@ -1,6 +1,6 @@
 package com.edgarjorozco.lunchtime.datasource.network
 
-import com.edgarjorozco.lunchtime.domain.*
+import com.edgarjorozco.lunchtime.models.*
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)

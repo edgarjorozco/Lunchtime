@@ -1,8 +1,8 @@
 package com.edgarjorozco.lunchtime.repository
 
 import com.edgarjorozco.lunchtime.datasource.cache.PlaceDao
-import com.edgarjorozco.lunchtime.domain.DataState
-import com.edgarjorozco.lunchtime.domain.Place
+import com.edgarjorozco.lunchtime.models.DataState
+import com.edgarjorozco.lunchtime.models.Place
 import com.edgarjorozco.lunchtime.util.mappers.PlaceCacheMapper
 import kotlinx.coroutines.flow.flow
 

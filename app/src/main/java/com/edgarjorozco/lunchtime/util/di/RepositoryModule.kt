@@ -7,6 +7,7 @@ import com.edgarjorozco.lunchtime.datasource.network.PlaceDetailWebservice
 import com.edgarjorozco.lunchtime.repository.AutoCompleteRepository
 import com.edgarjorozco.lunchtime.repository.FavoritesRepository
 import com.edgarjorozco.lunchtime.repository.NearbySearchRepository
+import com.edgarjorozco.lunchtime.repository.PlaceDetailRepository
 import com.edgarjorozco.lunchtime.util.mappers.PlaceCacheMapper
 import com.edgarjorozco.lunchtime.util.mappers.PlaceNetworkMapper
 import dagger.Module
@@ -21,15 +22,21 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideAutoCompleteRepository(
-        placeDetailWebservice: PlaceDetailWebservice,
-        autoCompleteWebservice: AutoCompleteWebservice,
+        autoCompleteWebservice: AutoCompleteWebservice
+    ): AutoCompleteRepository {
+        return AutoCompleteRepository(autoCompleteWebservice)
+    }
+
+    @Singleton
+    @Provides
+    fun providePlaceDetailRepository(
+        detailWebservice: PlaceDetailWebservice,
         dao: PlaceDao,
         networkMapper: PlaceNetworkMapper,
         cacheMapper: PlaceCacheMapper
-    ): AutoCompleteRepository {
-        return AutoCompleteRepository(placeDetailWebservice,autoCompleteWebservice, dao, networkMapper, cacheMapper)
+    ): PlaceDetailRepository {
+        return PlaceDetailRepository(detailWebservice, dao, networkMapper, cacheMapper)
     }
-
     @Singleton
     @Provides
     fun provideFavoritesRepository(

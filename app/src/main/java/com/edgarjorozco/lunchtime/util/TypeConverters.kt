@@ -3,9 +3,9 @@ package com.edgarjorozco.lunchtime.util
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import com.edgarjorozco.lunchtime.domain.OpenHoursPeriod
-import com.edgarjorozco.lunchtime.domain.PlacePhoto
-import com.edgarjorozco.lunchtime.domain.PlaceReview
+import com.edgarjorozco.lunchtime.models.OpenHoursPeriod
+import com.edgarjorozco.lunchtime.models.PlacePhoto
+import com.edgarjorozco.lunchtime.models.PlaceReview
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import java.lang.reflect.Type

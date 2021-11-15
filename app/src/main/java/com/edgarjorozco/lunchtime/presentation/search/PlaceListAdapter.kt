@@ -6,10 +6,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.edgarjorozco.lunchtime.databinding.ListItemPlaceBinding
-import com.edgarjorozco.lunchtime.domain.Place
+import com.edgarjorozco.lunchtime.models.Place
 
-class PlaceListAdapter(private val onFavoriteChange: (place: Place) -> Unit):
-    ListAdapter<Place, PlaceListAdapter.PlaceViewHolder>(Companion) {
+class PlaceListAdapter(
+    private val onFavoriteChange: (place: Place) -> Unit,
+    private val onClickListener: (place: Place) -> Unit,
+): ListAdapter<Place, PlaceListAdapter.PlaceViewHolder>(Companion) {
+
     class PlaceViewHolder(val binding: ListItemPlaceBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
@@ -27,6 +30,9 @@ class PlaceListAdapter(private val onFavoriteChange: (place: Place) -> Unit):
                 place.isFavorite = !place.isFavorite
                 holder.binding.invalidateAll()
                 onFavoriteChange.invoke(place)
+            }
+            container.setOnClickListener {
+                onClickListener.invoke(place)
             }
         }
     }

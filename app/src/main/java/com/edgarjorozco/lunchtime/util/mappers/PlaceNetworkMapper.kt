@@ -3,7 +3,7 @@ package com.edgarjorozco.lunchtime.util.mappers
 import com.edgarjorozco.lunchtime.datasource.network.GeometryRaw
 import com.edgarjorozco.lunchtime.datasource.network.OpeningHoursRaw
 import com.edgarjorozco.lunchtime.datasource.network.PlaceRaw
-import com.edgarjorozco.lunchtime.domain.Place
+import com.edgarjorozco.lunchtime.models.Place
 import javax.inject.Inject
 
 class PlaceNetworkMapper @Inject constructor() : DataSourceObjectMapper<PlaceRaw, Place>() {

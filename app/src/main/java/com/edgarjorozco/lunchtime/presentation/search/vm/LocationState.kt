@@ -1,6 +1,6 @@
 package com.edgarjorozco.lunchtime.presentation.search.vm
 
-import com.edgarjorozco.lunchtime.domain.LatLng
+import com.edgarjorozco.lunchtime.models.LatLng
 
 sealed class LocationState{
     data class Precise(val latLng: LatLng): LocationState()

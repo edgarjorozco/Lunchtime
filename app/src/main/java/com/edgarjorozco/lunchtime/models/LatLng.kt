@@ -1,4 +1,4 @@
-package com.edgarjorozco.lunchtime.domain
+package com.edgarjorozco.lunchtime.models
 
 import androidx.room.Embedded
 import com.squareup.moshi.JsonClass

@@ -3,7 +3,7 @@ package com.edgarjorozco.lunchtime.datasource.cache
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.edgarjorozco.lunchtime.domain.*
+import com.edgarjorozco.lunchtime.models.*
 
 
 @Entity(tableName = "placeDetails")

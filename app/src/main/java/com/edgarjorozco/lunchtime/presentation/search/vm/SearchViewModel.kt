@@ -6,12 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.edgarjorozco.lunchtime.datasource.network.AutoCompletePrediction
-import com.edgarjorozco.lunchtime.domain.DataState
-import com.edgarjorozco.lunchtime.domain.LatLng
-import com.edgarjorozco.lunchtime.domain.Place
-import com.edgarjorozco.lunchtime.repository.AutoCompleteRepository
+import com.edgarjorozco.lunchtime.models.DataState
+import com.edgarjorozco.lunchtime.models.LatLng
+import com.edgarjorozco.lunchtime.models.Place
 import com.edgarjorozco.lunchtime.repository.FavoritesRepository
 import com.edgarjorozco.lunchtime.repository.NearbySearchRepository
+import com.edgarjorozco.lunchtime.usecases.AutoCompleteUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject
 constructor(
-    private val autoCompleteRepo: AutoCompleteRepository,
+    private val autoCompleteUseCases: AutoCompleteUseCases,
     private val nearbySearchRepository: NearbySearchRepository,
     private val favoritesRepository: FavoritesRepository
 ) : ViewModel() {
@@ -90,7 +90,7 @@ constructor(
 
         viewModelScope.launch {
             val latLng = _newMapCenterLocation.value?.let { LatLng(it.lat, it.lng) }
-            autoCompleteRepo.getPlaceSuggestions(input.toString(), latLng).onEach {
+            autoCompleteUseCases.getPlaceSuggestions(input.toString(), latLng).onEach {
                 _suggestionList.value = it
             }.launchIn(this)
         }
@@ -98,7 +98,7 @@ constructor(
 
     fun onSuggestionSelected(suggestion: AutoCompletePrediction) {
         viewModelScope.launch {
-            autoCompleteRepo.getFullPlaceDetail(suggestion.place_id).onEach {
+            autoCompleteUseCases.getFullPlaceDetail(suggestion.place_id).onEach {
                 when(it) {
                     is DataState.Success -> {
                         it.toData()?.let { place ->

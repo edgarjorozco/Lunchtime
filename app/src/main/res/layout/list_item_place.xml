@@ -6,7 +6,7 @@
     <data>
         <variable
             name="place"
-            type="com.edgarjorozco.lunchtime.domain.Place"/>
+            type="com.edgarjorozco.lunchtime.models.Place"/>
 
         <variable
             name="shouldLoadPhoto"
@@ -19,6 +19,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_rect_bg"

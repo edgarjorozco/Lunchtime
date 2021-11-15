@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="place"
+            type="com.edgarjorozco.lunchtime.models.Place" />
+
+        <import
+            alias="ext"
+            type="com.edgarjorozco.lunchtime.util.StringExtensionsKt"/>
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/light_green"
+                app:layout_scrollFlags="enterAlways"
+                app:titleTextColor="@color/at_grey"
+                app:subtitleTextColor="@color/at_grey"
+                app:layout_constraintTop_toTopOf="parent">
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:navigationIcon="@drawable/nav_back_arrow"
+                    app:title="@{place.name}"
+                    app:subtitle="@{place.simplifiedAddress}"/>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/photo_pager"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/photo_pager_height"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/app_bar"/>
+
+            <TextView
+                android:id="@+id/tag_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detail_frag_tag_title"
+                style="@style/LunchtimeHeaderText"
+                android:layout_marginStart="@dimen/margin_medium"
+                app:layout_constraintTop_toTopOf="@id/tags"
+                app:layout_constraintBottom_toBottomOf="@id/tags"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tags"
+                />
+
+            <TextView
+                android:id="@+id/tags"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{ext.joinWithComma(place.placeTypes)}"
+                style="@style/LunchtimeHeaderText"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginStart="@dimen/margin_medium"
+                app:layout_constraintTop_toBottomOf="@id/photo_pager"
+                app:layout_constraintStart_toEndOf="@id/tag_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="Restaurant, Bar, Pub, Cafe, Fancy, Nice, Sit Down, Test" />
+
+            <!--  TODO Open hours, contact info, reviews, static map. Placeholders for now -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/tags"
+                app:layout_constraintStart_toStartOf="parent">
+                <include layout="@layout/list_item_shimmer_placeholder"/>
+                <include layout="@layout/list_item_shimmer_placeholder"/>
+                <include layout="@layout/list_item_shimmer_placeholder"/>
+                <include layout="@layout/list_item_shimmer_placeholder"/>
+                <include layout="@layout/list_item_shimmer_placeholder"/>
+                <include layout="@layout/list_item_shimmer_placeholder"/>
+                <include layout="@layout/list_item_shimmer_placeholder"/>
+                <include layout="@layout/list_item_shimmer_placeholder"/>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

@@ -1,7 +1,7 @@
 package com.edgarjorozco.lunchtime.datasource.cache
 
 import androidx.room.Embedded
-import com.edgarjorozco.lunchtime.domain.*
+import com.edgarjorozco.lunchtime.models.*
 
 data class PlaceCacheUpdate (
     val placeId: String,

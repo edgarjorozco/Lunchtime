@@ -1,4 +1,4 @@
-package com.edgarjorozco.lunchtime.domain
+package com.edgarjorozco.lunchtime.models
 
 sealed class DataState<out T> {
     data class Success<T>(val data : T?): DataState<T>()

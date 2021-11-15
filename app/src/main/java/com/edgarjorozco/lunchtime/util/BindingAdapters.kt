@@ -1,5 +1,6 @@
 package com.edgarjorozco.lunchtime.util
 
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
@@ -23,7 +24,12 @@ object BindingAdapters {
     @JvmStatic
     fun loadGooglePlacesPhoto(view: ImageView, referenceId: String?) {
         if (referenceId == null) return
-        val url = view.context.generateGooglePlacesPhotoUrl(view.width, referenceId)
+        var width = view.width
+        if (width == 0) {
+            val displayMetrics = Resources.getSystem().displayMetrics
+            width = minOf(displayMetrics.widthPixels, displayMetrics.heightPixels)
+        }
+        val url = view.context.generateGooglePlacesPhotoUrl(width, referenceId)
         Glide
             .with(view)
             .load(url)

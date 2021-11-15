@@ -14,8 +14,9 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.edgarjorozco.lunchtime.R
 import com.edgarjorozco.lunchtime.databinding.ListItemPlaceBinding
-import com.edgarjorozco.lunchtime.domain.DataState
-import com.edgarjorozco.lunchtime.domain.Place
+import com.edgarjorozco.lunchtime.models.DataState
+import com.edgarjorozco.lunchtime.models.Place
+import com.edgarjorozco.lunchtime.presentation.placedetail.PlaceDetailActivity
 import com.edgarjorozco.lunchtime.presentation.search.vm.LocationState
 import com.edgarjorozco.lunchtime.presentation.search.vm.SearchResultsSource
 import com.edgarjorozco.lunchtime.presentation.search.vm.SearchViewModel
@@ -30,7 +31,8 @@ import com.google.android.gms.maps.model.*
 
 
 class MapFragment: SupportMapFragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallback,
-    GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnMapClickListener {
+    GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnMapClickListener,
+    GoogleMap.OnInfoWindowClickListener {
     companion object {
         const val DEFAULT_ZOOM_LEVEL = 15f
     }
@@ -132,6 +134,7 @@ class MapFragment: SupportMapFragment(), GoogleMap.OnMarkerClickListener, OnMapR
         googleMap?.setOnCameraIdleListener(this)
         googleMap?.setOnMarkerClickListener(this)
         googleMap?.setOnMapClickListener(this)
+        googleMap?.setOnInfoWindowClickListener(this)
 
         googleMap?.setInfoWindowAdapter(
             object : GoogleMap.InfoWindowAdapter {
@@ -191,5 +194,11 @@ class MapFragment: SupportMapFragment(), GoogleMap.OnMarkerClickListener, OnMapR
     override fun onMapClick(latLng: LatLng) {
         if (selectedMarker != null) selectedMarker?.setIcon(inactiveBitmap)
         selectedMarker = null
+    }
+
+    override fun onInfoWindowClick(marker: Marker) {
+        val place = marker.tag as Place
+        val intent = PlaceDetailActivity.getCallingIntent(requireContext(), place.placeId)
+        startActivity(intent)
     }
 }

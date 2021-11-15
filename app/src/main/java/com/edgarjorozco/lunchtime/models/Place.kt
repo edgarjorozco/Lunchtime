@@ -1,4 +1,4 @@
-package com.edgarjorozco.lunchtime.domain
+package com.edgarjorozco.lunchtime.models
 
 data class Place (
     val placeId: String,

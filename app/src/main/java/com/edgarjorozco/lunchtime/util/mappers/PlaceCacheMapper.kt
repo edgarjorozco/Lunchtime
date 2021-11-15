@@ -1,7 +1,7 @@
 package com.edgarjorozco.lunchtime.util.mappers
 
 import com.edgarjorozco.lunchtime.datasource.cache.PlaceCacheEntity
-import com.edgarjorozco.lunchtime.domain.Place
+import com.edgarjorozco.lunchtime.models.Place
 import javax.inject.Inject
 
 class PlaceCacheMapper @Inject constructor() : DataSourceObjectMapper<PlaceCacheEntity, Place>() {

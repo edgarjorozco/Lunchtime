@@ -11,8 +11,8 @@ import androidx.fragment.app.viewModels
 import com.edgarjorozco.lunchtime.R
 import com.edgarjorozco.lunchtime.databinding.FragmentSearchBinding
 import com.edgarjorozco.lunchtime.datasource.network.AutoCompletePrediction
-import com.edgarjorozco.lunchtime.domain.DataState
-import com.edgarjorozco.lunchtime.domain.LatLng
+import com.edgarjorozco.lunchtime.models.DataState
+import com.edgarjorozco.lunchtime.models.LatLng
 import com.edgarjorozco.lunchtime.presentation.search.vm.LocationState
 import com.edgarjorozco.lunchtime.presentation.search.vm.SearchResultsSource
 import com.edgarjorozco.lunchtime.presentation.search.vm.SearchViewModel

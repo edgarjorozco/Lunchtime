@@ -5,3 +5,5 @@ package com.edgarjorozco.lunchtime.util
 fun withBulletSeparator(vararg strings: String): String = strings.joinToString(" • ")
 
 fun String.repeatN(int: Int): String = this.repeat(int)
+
+fun List<String>?.joinWithComma() = this?.joinToString(", ")

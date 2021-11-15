@@ -2,8 +2,8 @@ package com.edgarjorozco.lunchtime.repository
 
 import com.edgarjorozco.lunchtime.datasource.cache.PlaceDao
 import com.edgarjorozco.lunchtime.datasource.network.NearbySearchWebservice
-import com.edgarjorozco.lunchtime.domain.DataState
-import com.edgarjorozco.lunchtime.domain.LatLng
+import com.edgarjorozco.lunchtime.models.DataState
+import com.edgarjorozco.lunchtime.models.LatLng
 import com.edgarjorozco.lunchtime.util.constants.ApiResponseStatus
 import com.edgarjorozco.lunchtime.util.mappers.PlaceNetworkMapper
 import kotlinx.coroutines.flow.flow
