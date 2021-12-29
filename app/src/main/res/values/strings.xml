@@ -19,6 +19,7 @@
     <string name="place_image_desc">Place Image</string>
     <string name="favorite_desc">Favorite Button</string>
     <string name="favorites_desc">Favorites</string>
+    <string name="share_desc">Share</string>
 
     <string name="error_default_title">Sorry, there was an error</string>
     <string name="error_default_positive">OK</string>

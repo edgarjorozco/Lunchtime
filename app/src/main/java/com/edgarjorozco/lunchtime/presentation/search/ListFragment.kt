@@ -2,6 +2,7 @@ package com.edgarjorozco.lunchtime.presentation.search
 
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +28,7 @@ class ListFragment: LunchtimeBaseFragment<SearchListFragmentBinding>(R.layout.se
     }
 
     private fun setUpRecycler() {
-        val layoutManager = LinearLayoutManager(requireContext())
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         val adapter = PlaceListAdapter (
             { viewModel.onFavoriteListing(it) },
             { openDetail(it.placeId) }
@@ -35,7 +36,6 @@ class ListFragment: LunchtimeBaseFragment<SearchListFragmentBinding>(R.layout.se
 
         dataBinding?.placeRecycler?.apply {
             this.layoutManager = layoutManager
-            addItemDecoration(SpaceDecoration(DECORATOR_SPACE_DP.dpToPx(requireContext())))
             this.adapter = adapter
         }
 

@@ -17,8 +17,8 @@ constructor(
     private val dao: PlaceDao,
     private val networkMapper: PlaceNetworkMapper,
     private val cacheMapper: PlaceCacheMapper
-){
-    suspend fun getFullPlaceDetail(placeId: String): Flow<DataState<Place>> = flow {
+): DetailRepository{
+    override suspend fun getFullPlaceDetail(placeId: String): Flow<DataState<Place>> = flow {
         emit(DataState.Loading)
         try {
             if (dao.hasPlace(placeId)) {

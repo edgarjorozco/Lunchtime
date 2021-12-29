@@ -46,6 +46,29 @@
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/app_bar"/>
 
+            <ImageView
+                android:id="@+id/share_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/share"
+                android:contentDescription="@string/share_desc"
+                android:padding="@dimen/container_padding_small"
+                app:layout_constraintTop_toBottomOf="@id/photo_pager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:tint="@color/light_green"
+                />
+
+            <TextView
+                android:id="@+id/phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{place.formattedPhoneNumber}"
+                android:textColor="@color/purple_700"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/share_icon"
+                android:padding="@dimen/container_padding_small"
+                tools:text="323 559 7023"/>
+
             <TextView
                 android:id="@+id/tag_text"
                 android:layout_width="wrap_content"
@@ -67,9 +90,9 @@
                 style="@style/LunchtimeHeaderText"
                 android:layout_marginTop="@dimen/margin_medium"
                 android:layout_marginStart="@dimen/margin_medium"
-                app:layout_constraintTop_toBottomOf="@id/photo_pager"
                 app:layout_constraintStart_toEndOf="@id/tag_text"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phone_number"
                 tools:text="Restaurant, Bar, Pub, Cafe, Fancy, Nice, Sit Down, Test" />
 
             <!--  TODO Open hours, contact info, reviews, static map. Placeholders for now -->

@@ -9,8 +9,10 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.adapters.ListenerUtil
 import androidx.databinding.adapters.TextViewBindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.edgarjorozco.lunchtime.R
+import com.edgarjorozco.lunchtime.util.ui.HorizontalSpaceDecoration
 import com.google.android.material.button.MaterialButton
 
 object BindingAdapters {
@@ -62,5 +64,20 @@ object BindingAdapters {
         if (oldValue != null) view.removeTextChangedListener(oldValue)
         if (newValue != null) view.addTextChangedListener(newValue)
 
+    }
+
+    @BindingAdapter(value = [ "recyclerView_horizontalMargin", "recyclerView_startingHorizontalMargin", "recyclerView_endingHorizontalMargin" ], requireAll = false )
+    @JvmStatic
+    fun setHorizontalMargin(recycler: RecyclerView, defaultMargin: Float?, startingMargin: Float?, endingMargin: Float?) {
+
+        val startSpace = (startingMargin?:defaultMargin?:0).toInt()
+        val endingSpace = (endingMargin?:defaultMargin?:0).toInt()
+        val defaultSpace = (defaultMargin?:0).toInt()
+
+        val spaceDecorator = HorizontalSpaceDecoration(startSpace, endingSpace, defaultSpace)
+
+        recycler.apply {
+            addItemDecoration(spaceDecorator)
+        }
     }
 }

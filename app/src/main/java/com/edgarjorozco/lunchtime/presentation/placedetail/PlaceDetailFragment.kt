@@ -1,5 +1,7 @@
 package com.edgarjorozco.lunchtime.presentation.placedetail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -38,6 +40,26 @@ class PlaceDetailFragment: LunchtimeBaseFragment<FragmentPlaceDetailBinding>(R.l
         dataBinding?.place = place
         place.photos?.let {
             dataBinding?.photoPager?.adapter = PhotoPagerAdapter(it)
+        }
+
+        dataBinding?.shareIcon?.setOnClickListener {
+            val sendingIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, place.name)
+                type = "text/plain"
+            }
+
+            val shareIntent  = Intent.createChooser(sendingIntent, null)
+            startActivity(shareIntent)
+        }
+
+        dataBinding?.phoneNumber?.setOnClickListener {
+            val callingIntent = Intent(Intent.ACTION_DIAL).apply {
+                data = Uri.parse("tel:$place.formattedPhoneNumber")
+            }
+
+            val callIntent = Intent.createChooser(callingIntent,  null)
+            startActivity(callIntent)
         }
     }
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -24,6 +25,8 @@
             android:layout_height="match_parent"
             android:paddingStart="@dimen/container_padding_default"
             android:paddingEnd="@dimen/container_padding_default"
+            app:recyclerView_horizontalMargin="@{@dimen/recycler_margins}"
+            app:recyclerView_startingHorizontalMargin="@{@dimen/recycler_margin_huge}"
             tools:listitem="@layout/list_item_place"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

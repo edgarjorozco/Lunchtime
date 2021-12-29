@@ -1,0 +1,29 @@
+package com.edgarjorozco.lunchtime.util.ui
+
+import android.graphics.Rect
+import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+
+class HorizontalSpaceDecoration (
+    private val firstSpace: Int,
+    private val endingSpace: Int,
+    private val defaultSpace: Int) : RecyclerView.ItemDecoration() {
+
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView,
+                                state: RecyclerView.State) {
+        val position = parent.getChildAdapterPosition(view)
+
+        if (position == 0) {
+            outRect.left = firstSpace
+        } else {
+            outRect.left = defaultSpace
+        }
+
+
+        if (parent.adapter != null && position == parent.adapter!!.itemCount - 1) {
+            outRect.right = endingSpace
+        }
+
+
+    }
+}
